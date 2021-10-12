@@ -1,24 +1,13 @@
 <script context="module">
-	import { gql, GraphQLClient } from 'graphql-request';
-	export async function load() {
-		const graphCmsClient = new GraphQLClient(
-			'https://api-eu-central-1.graphcms.com/v2/ckumppsk33ni901xpa4sueigl/master',
-			{ headers: {} }
-		);
-		const query = gql`
-			query Launches {
-				launches {
-					id
-					slug
-					date
-					name
-				}
-			}
-		`;
-		const { launches } = await graphCmsClient.request(query);
-		return {
-			props: { launches }
-		};
+	export async function load({ fetch }) {
+		const res = await fetch('launches.json');
+		if (res.ok) {
+			const { launches } = await res.json();
+
+			return {
+				props: { launches }
+			};
+		}
 	}
 </script>
 
